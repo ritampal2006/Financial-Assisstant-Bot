@@ -1,0 +1,22 @@
+{
+  "name": "fincopilot-india",
+  "version": "1.0.0",
+  "description": "AI-Powered Indian Financial & Accounting Helpline Agent",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "fintech",
+    "gst",
+    "tds",
+    "india-accounting",
+    "schedule-iii",
+    "fincopilot",
+    "n8n"
+  ],
+  "author": "FinCopilot AI Team",
+  "license": "MIT"
+}

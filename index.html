@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinCopilot India - AI-Powered Indian Financial & Accounting Helpline</title>
+  <meta name="description" content="Intelligent Indian Financial & Accounting Copilot powered by GST & TDS Rules Engine (FY 24-25 / 25-26), Receipt OCR, Schedule III Balance Sheets, and n8n Orchestration." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome & Lucide Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- CDN Libraries: Chart.js, SheetJS (XLSX), jsPDF, html2canvas -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-layout">
+    
+    <!-- Top Navigation Bar -->
+    <header class="navbar" id="mainHeader">
+      <div class="nav-brand">
+        <div class="brand-logo">
+          <i class="fa-solid fa-indian-rupee-sign"></i>
+          <span class="ai-pulse"></span>
+        </div>
+        <div class="brand-info">
+          <div class="brand-title">FinCopilot <span class="india-badge">INDIA</span></div>
+          <div class="brand-sub">AI Financial & Accounting Helpline</div>
+        </div>
+      </div>
+
+      <div class="nav-badges">
+        <div class="status-pill fy-pill" title="Indian Financial Year April 1 to March 31">
+          <i class="fa-regular fa-calendar-check"></i>
+          <span>FY 2024-25 / 2025-26</span>
+          <span class="pulse-dot"></span>
+        </div>
+        <div class="status-pill gst-pill">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>GSTIN: 29AABBD5678M1Z2</span>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn btn-outline" id="themeToggleBtn" title="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button class="btn btn-secondary" id="sampleDataResetBtn" title="Reset / Load Demo Data">
+          <i class="fa-solid fa-rotate-right"></i>
+          <span>Reset Demo</span>
+        </button>
+        <a href="https://nimble-raindrop-e0e99a.netlify.app/#contact" target="_blank" class="btn btn-primary" id="inquireSolutionBtn">
+          <i class="fa-solid fa-paper-plane"></i>
+          <span>Inquire About Solution</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="subnav-tabs" role="tablist">
+      <button class="tab-btn active" data-tab="tab-copilot" id="tabBtnCopilot">
+        <i class="fa-solid fa-robot"></i>
+        <span>AI Copilot Helpline</span>
+        <span class="badge-tag">Live</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-rules" id="tabBtnRules">
+        <i class="fa-solid fa-calculator"></i>
+        <span>GST & TDS Rules Engine</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-ocr" id="tabBtnOcr">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <span>Receipt OCR & Auto-Ledger</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-balancesheet" id="tabBtnBalanceSheet">
+        <i class="fa-solid fa-scale-balanced"></i>
+        <span>Schedule III Balance Sheet & P&L</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-gstr" id="tabBtnGstr">
+        <i class="fa-solid fa-file-shield"></i>
+        <span>GSTR Filing & ITC Match</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-integrations" id="tabBtnIntegrations">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span>n8n & Bot Simulation</span>
+      </button>
+    </nav>
+
+    <!-- App Container -->
+    <main class="main-content">
+
+      <!-- ============================================================ -->
+      <!-- TAB 1: FINCOPILOT AI HELPLINE CHAT -->
+      <!-- ============================================================ -->
+      <section class="tab-panel active" id="tab-copilot">
+        <div class="copilot-container">
+          
+          <!-- Left Sidebar: Quick Prompts & Indian Accounting Toolkit -->
+          <div class="copilot-sidebar">
+            <div class="panel-header">
+              <i class="fa-solid fa-bolt-lightning text-accent"></i>
+              <h3>Frequent Helpline Queries</h3>
+            </div>
+            <p class="text-muted text-sm">Click any question below to immediately run real-time Indian accounting rules & tax computations:</p>
+            
+            <div class="prompt-chips-grid" id="quickPromptsContainer">
+              <!-- Dynamically populated via JS -->
+            </div>
+
+            <div class="card bg-surface mt-4">
+              <div class="card-title text-sm"><i class="fa-solid fa-lightbulb text-warning"></i> Key Features of AI Copilot:</div>
+              <ul class="feature-checklist">
+                <li><i class="fa-solid fa-check text-success"></i> <strong>GST Rules FY 24-25:</strong> 0%, 5%, 12%, 18%, 28% intra vs inter-state tax split.</li>
+                <li><i class="fa-solid fa-check text-success"></i> <strong>TDS Slabs:</strong> 194C, 194J (2%/10%), 194I, 194Q with threshold limits.</li>
+                <li><i class="fa-solid fa-check text-success"></i> <strong>Budget FY 24-25 Slabs:</strong> New vs Old Tax Regime comparison with ₹75k Standard Deduction.</li>
+                <li><i class="fa-solid fa-check text-success"></i> <strong>Schedule III Ready:</strong> Double-entry journal voucher generator.</li>
+              </ul>
+            </div>
+
+            <div class="card bg-surface mt-3">
+              <div class="card-title text-sm"><i class="fa-solid fa-cloud-arrow-down text-info"></i> Direct Downloads:</div>
+              <div class="download-btn-group">
+                <button class="btn btn-sm btn-outline" id="quickDownloadSampleCsv">
+                  <i class="fa-solid fa-file-csv"></i> Sample Transactions CSV
+                </button>
+                <button class="btn btn-sm btn-outline" id="quickDownloadGstJson">
+                  <i class="fa-solid fa-file-code"></i> GSTR-1 Portal JSON
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Live Chat Window -->
+          <div class="copilot-chat-area">
+            <div class="chat-header">
+              <div class="chat-agent-meta">
+                <div class="agent-avatar">
+                  <i class="fa-solid fa-user-astronaut"></i>
+                  <span class="online-indicator"></span>
+                </div>
+                <div>
+                  <div class="agent-name">FinCopilot AI Assistant <span class="badge-mini">LLM Studio Fine-Tuned</span></div>
+                  <div class="agent-role">Indian Tax, Accounting & Compliance Expert (FY 2024-25)</div>
+                </div>
+              </div>
+              <div class="chat-header-actions">
+                <button class="btn btn-sm btn-outline" id="clearChatBtn" title="Clear Chat">
+                  <i class="fa-solid fa-trash-can"></i> Clear
+                </button>
+              </div>
+            </div>
+
+            <!-- Messages Stream -->
+            <div class="chat-messages" id="chatMessagesStream">
+              <!-- Initial Welcome Message -->
+              <div class="message-bubble bot-message">
+                <div class="message-avatar"><i class="fa-solid fa-brain"></i></div>
+                <div class="message-body">
+                  <div class="message-sender">FinCopilot India</div>
+                  <div class="message-content">
+                    <p>👋 <strong>Namaste!</strong> I am your Indian Accounting & Tax Copilot.</p>
+                    <p>Ask me anything regarding <strong>GST calculations</strong>, <strong>TDS Section 194J/194C/194I</strong> rates, <strong>Income Tax Slabs (FY 2024-25 / 2025-26)</strong>, <strong>Advance Tax installments</strong>, or <strong>Receipt OCR & Ledger Posting</strong>.</p>
+                    <div class="quick-reply-bar">
+                      <button class="quick-chip" data-query="Calculate GST on ₹10,000 IT consulting invoice">
+                        <i class="fa-solid fa-calculator"></i> Calculate GST on ₹10,000 IT consulting invoice
+                      </button>
+                      <button class="quick-chip" data-query="Explain TDS 194J rates for technical vs professional">
+                        <i class="fa-solid fa-percentage"></i> TDS 194J (2% vs 10%)
+                      </button>
+                      <button class="quick-chip" data-query="Compare New vs Old Tax Regime for ₹12 Lakh salary">
+                        <i class="fa-solid fa-scale-balanced"></i> New vs Old Tax Slab
+                      </button>
+                    </div>
+                  </div>
+                  <div class="message-time">Just now</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Input Bar -->
+            <div class="chat-input-container">
+              <form id="chatForm" class="chat-form">
+                <button type="button" class="btn-icon" id="chatAttachBtn" title="Upload Receipt / CSV for Chat Analysis">
+                  <i class="fa-solid fa-paperclip"></i>
+                </button>
+                <input type="file" id="chatFileInput" accept="image/*,.pdf,.csv,.json" style="display:none;" />
+                
+                <input
+                  type="text"
+                  id="chatInput"
+                  placeholder="Ask about GST on ₹10,000 invoice, TDS 194J, New Tax Slabs, HSN codes..."
+                  autocomplete="off"
+                />
+                
+                <button type="button" class="btn-icon" id="chatVoiceBtn" title="Voice Input (Speech-to-Text)">
+                  <i class="fa-solid fa-microphone"></i>
+                </button>
+
+                <button type="submit" class="btn btn-primary" id="chatSubmitBtn">
+                  <span>Send</span>
+                  <i class="fa-solid fa-arrow-up"></i>
+                </button>
+              </form>
+              <div class="chat-disclaimer">
+                <i class="fa-solid fa-circle-info"></i> FinCopilot calculations conform to Indian Income Tax Act 1961 & CGST/SGST/IGST Act 2017 amendments for FY 2024-25.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- TAB 2: GST & TDS INDIAN RULES ENGINE (FY 24-25 / 25-26) -->
+      <!-- ============================================================ -->
+      <section class="tab-panel" id="tab-rules">
+        <div class="rules-grid">
+          
+          <!-- Box 1: Interactive GST Calculator -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <div class="card-icon bg-emerald"><i class="fa-solid fa-receipt"></i></div>
+              <div>
+                <h3 class="card-title">Indian GST Calculator & Breakdown</h3>
+                <p class="card-subtitle">Intra-State (CGST + SGST) vs Inter-State (IGST) & Reverse Charge (RCM)</p>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="gstTaxableAmount">Taxable Value (₹):</label>
+                <div class="input-with-symbol">
+                  <span class="currency-symbol">₹</span>
+                  <input type="number" id="gstTaxableAmount" value="10000" min="0" step="100" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="gstRateSelect">GST Rate Slab (%):</label>
+                <select id="gstRateSelect">
+                  <option value="0">0% (Nil Rated / Exempt)</option>
+                  <option value="5">5% (Essential Goods, Freight GTA)</option>
+                  <option value="12">12% (Processed Goods, Standard)</option>
+                  <option value="18" selected>18% (IT Services, Consulting, Commercial Rent)</option>
+                  <option value="28">28% (Luxury Goods, Automobiles, Gaming)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="gstSupplyType">Supply Type:</label>
+                <select id="gstSupplyType">
+                  <option value="intra" selected>Intra-State (Same State: CGST 50% + SGST 50%)</option>
+                  <option value="inter">Inter-State (Different State / Export: IGST 100%)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="gstHsnSelect">HSN / SAC Code Lookup:</label>
+                <select id="gstHsnSelect">
+                  <option value="custom">-- Choose Standard Indian HSN / SAC --</option>
+                  <!-- Populated via JS -->
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="checkbox-container">
+                <input type="checkbox" id="gstRcmCheckbox" />
+                <span class="checkmark"></span>
+                <span>Reverse Charge Mechanism (RCM) - Tax payable by recipient (e.g. GTA / Legal)</span>
+              </label>
+            </div>
+
+            <!-- Calculation Output Box -->
+            <div class="calc-result-box" id="gstResultBox">
+              <!-- Rendered via JS -->
+            </div>
+
+            <div class="mt-3 flex gap-2">
+              <button class="btn btn-sm btn-secondary" id="copyGstCalcBtn">
+                <i class="fa-regular fa-copy"></i> Copy GST Breakdown
+              </button>
+              <button class="btn btn-sm btn-primary" id="postGstToLedgerBtn">
+                <i class="fa-solid fa-plus"></i> Add to Ledger Journal
+              </button>
+            </div>
+          </div>
+
+          <!-- Box 2: TDS Calculator under Income Tax Act -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <div class="card-icon bg-saffron"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+              <div>
+                <h3 class="card-title">TDS Deduction Engine (FY 24-25)</h3>
+                <p class="card-subtitle">Sections 194C, 194J, 194I, 194Q, 194H & PAN Penalty Check</p>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="tdsSectionSelect">TDS Section:</label>
+                <select id="tdsSectionSelect">
+                  <option value="194J" selected>194J - Professional & Technical Fees</option>
+                  <option value="194C">194C - Contractor & Sub-contractor</option>
+                  <option value="194I">194I - Rent of Land, Building or Machinery</option>
+                  <option value="194Q">194Q - Purchase of Goods exceeding ₹50L</option>
+                  <option value="194H">194H - Commission & Brokerage</option>
+                  <option value="194A">194A - Interest other than on securities</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="tdsPayeeType">Payee Classification / Sub-type:</label>
+                <select id="tdsPayeeType">
+                  <!-- Populated dynamically based on section -->
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="tdsGrossAmount">Gross Payment (₹):</label>
+                <div class="input-with-symbol">
+                  <span class="currency-symbol">₹</span>
+                  <input type="number" id="tdsGrossAmount" value="50000" min="0" step="1000" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="checkbox-container mt-4">
+                  <input type="checkbox" id="tdsNoPanCheckbox" />
+                  <span class="checkmark"></span>
+                  <span>No Valid PAN Provided (Apply 20% Section 206AA rate)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- TDS Result Box -->
+            <div class="calc-result-box" id="tdsResultBox">
+              <!-- Rendered via JS -->
+            </div>
+
+            <div class="mt-3 flex gap-2">
+              <button class="btn btn-sm btn-secondary" id="copyTdsCalcBtn">
+                <i class="fa-regular fa-copy"></i> Copy TDS Summary
+              </button>
+              <button class="btn btn-sm btn-primary" id="postTdsToLedgerBtn">
+                <i class="fa-solid fa-plus"></i> Post TDS Voucher
+              </button>
+            </div>
+          </div>
+
+          <!-- Box 3: Income Tax Slab Comparator (New vs Old Regime) -->
+          <div class="card glass-card span-2">
+            <div class="card-header">
+              <div class="card-icon bg-indigo"><i class="fa-solid fa-chart-line"></i></div>
+              <div>
+                <h3 class="card-title">Income Tax Slab Comparison (New Sec 115BAC vs Old Regime)</h3>
+                <p class="card-subtitle">Updated as per Indian Union Budget FY 2024-25 & FY 2025-26 (Standard Deduction ₹75,000, 87A Rebate)</p>
+              </div>
+            </div>
+
+            <div class="form-row items-end">
+              <div class="form-group">
+                <label for="incomeGrossSalary">Annual Gross Income / CTC (₹):</label>
+                <div class="input-with-symbol">
+                  <span class="currency-symbol">₹</span>
+                  <input type="number" id="incomeGrossSalary" value="1500000" min="100000" step="50000" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="incomeDeductionsOld">Old Regime Deductions (80C, 80D, HRA, NPS, Housing Loan) (₹):</label>
+                <div class="input-with-symbol">
+                  <span class="currency-symbol">₹</span>
+                  <input type="number" id="incomeDeductionsOld" value="250000" min="0" step="10000" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <button class="btn btn-primary" id="recalcTaxSlabsBtn">
+                  <i class="fa-solid fa-calculator"></i> Compare Regimes
+                </button>
+              </div>
+            </div>
+
+            <div class="tax-comparison-container" id="taxComparisonResults">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Advance Tax Installment Schedule for Businesses & Professionals -->
+            <div class="advance-tax-section mt-4">
+              <div class="section-title"><i class="fa-solid fa-calendar-days text-accent"></i> Advance Tax Installment Schedule (FY 2024-25)</div>
+              <div class="advance-tax-table-wrapper" id="advanceTaxScheduleTable">
+                <!-- Rendered via JS -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- TAB 3: RECEIPT OCR & AUTO-LEDGER POSTING -->
+      <!-- ============================================================ -->
+      <section class="tab-panel" id="tab-ocr">
+        <div class="ocr-layout-grid">
+          
+          <!-- Left: Receipt Upload & Pre-loaded Indian Bills -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <div class="card-icon bg-emerald"><i class="fa-solid fa-camera-viewfinder"></i></div>
+              <div>
+                <h3 class="card-title">Receipt & Invoice OCR Scanner</h3>
+                <p class="card-subtitle">AI Multimodal parsing of Indian GST Invoices, Tax bills, and Cash Vouchers</p>
+              </div>
+            </div>
+
+            <!-- Drag & Drop Zone -->
+            <div class="ocr-dropzone" id="ocrDropzone">
+              <i class="fa-solid fa-cloud-arrow-up dropzone-icon"></i>
+              <h4>Drag & drop receipt image / PDF here</h4>
+              <p class="text-muted text-xs">Supports JPG, PNG, WEBP, PDF, CSV invoice feeds</p>
+              <button class="btn btn-sm btn-outline mt-2" id="ocrBrowseBtn">
+                <i class="fa-solid fa-folder-open"></i> Browse File
+              </button>
+              <input type="file" id="ocrFileInput" accept="image/*,.pdf,.csv" style="display: none;" />
+            </div>
+
+            <!-- Sample Invoice Quick Loader -->
+            <div class="sample-invoice-selector mt-4">
+              <div class="text-xs uppercase text-muted font-bold mb-2">Or Choose a Sample Indian Business Invoice:</div>
+              <div class="sample-invoice-list" id="sampleInvoiceList">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <!-- Receipt Visual Preview -->
+            <div class="receipt-preview-card mt-4" id="receiptVisualCard">
+              <div class="receipt-preview-header">
+                <span class="badge-mini"><i class="fa-solid fa-eye"></i> Invoice Document Preview</span>
+                <span id="receiptPreviewFilename" class="text-xs text-muted">INV-2024-001.pdf</span>
+              </div>
+              <div class="receipt-render-box" id="receiptRenderBox">
+                <!-- Visual mock of the invoice -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right: Extracted OCR Metadata & Auto Double-Entry Voucher -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <div class="card-icon bg-indigo"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+              <div>
+                <h3 class="card-title">Extracted Metadata & Journal Voucher</h3>
+                <p class="card-subtitle">GSTIN Checksum validation, SAC/HSN classification, and double-entry ledger posting</p>
+              </div>
+            </div>
+
+            <!-- Extracted Fields Summary -->
+            <div class="extracted-fields-grid" id="ocrExtractedFields">
+              <!-- Populated via JS -->
+            </div>
+
+            <!-- Auto Journal Voucher Posting Table -->
+            <div class="journal-voucher-preview mt-4">
+              <div class="flex justify-between items-center mb-2">
+                <div class="font-bold text-sm text-emerald"><i class="fa-solid fa-book-journal-whills"></i> Automated Double-Entry Journal Voucher:</div>
+                <span class="badge-tag bg-success-soft">Schedule III Ready</span>
+              </div>
+
+              <div class="table-responsive">
+                <table class="data-table" id="journalVoucherTable">
+                  <thead>
+                    <tr>
+                      <th>Account Head / Ledger</th>
+                      <th>Type</th>
+                      <th>Debit (Dr) ₹</th>
+                      <th>Credit (Cr) ₹</th>
+                    </tr>
+                  </thead>
+                  <tbody id="journalVoucherTbody">
+                    <!-- Populated via JS -->
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th colspan="2" class="text-right">Total:</th>
+                      <th id="jvTotalDebit">₹0.00</th>
+                      <th id="jvTotalCredit">₹0.00</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+
+            <!-- Post to Accounting System Button -->
+            <div class="action-bar-right mt-4 flex gap-2 justify-end">
+              <button class="btn btn-outline" id="downloadJvJsonBtn">
+                <i class="fa-solid fa-file-code"></i> Download JSON
+              </button>
+              <button class="btn btn-primary" id="confirmPostToLedgerBtn">
+                <i class="fa-solid fa-check-double"></i> Confirm & Post to Balance Sheet
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- TAB 4: SCHEDULE III BALANCE SHEET & P&L (INDIAN ACCOUNTING) -->
+      <!-- ============================================================ -->
+      <section class="tab-panel" id="tab-balancesheet">
+        <div class="bs-container">
+          
+          <!-- Control Bar -->
+          <div class="card bs-control-bar glass-card">
+            <div class="bs-meta-info">
+              <div>
+                <h3 class="company-heading" id="bsCompanyName">Bharat FinTech Innovations Private Limited</h3>
+                <div class="text-xs text-muted">
+                  CIN: <span id="bsCin">U72200KA2022PTC156789</span> | PAN: <span id="bsPan">AABBD5678M</span> | GSTIN: <span id="bsGstin">29AABBD5678M1Z2</span>
+                </div>
+                <div class="text-xs text-accent mt-1">
+                  <i class="fa-regular fa-clock"></i> Financial Year: <strong>FY 2024-25</strong> (As on 31st March 2025) - Indian Companies Act Schedule III Format
+                </div>
+              </div>
+            </div>
+
+            <div class="bs-actions flex gap-2 flex-wrap">
+              <button class="btn btn-sm btn-outline" id="btnUploadLedgerCsv">
+                <i class="fa-solid fa-file-arrow-up"></i> Upload Ledger CSV
+              </button>
+              <input type="file" id="ledgerCsvFileInput" accept=".csv,.json,.xlsx" style="display: none;" />
+
+              <button class="btn btn-sm btn-secondary" id="btnExportBsExcel">
+                <i class="fa-solid fa-file-excel text-success"></i> Export Excel (.xlsx)
+              </button>
+
+              <button class="btn btn-sm btn-secondary" id="btnExportBsPdf">
+                <i class="fa-solid fa-file-pdf text-danger"></i> Download Official PDF
+              </button>
+
+              <button class="btn btn-sm btn-primary" id="btnAddNewTxnModal">
+                <i class="fa-solid fa-plus"></i> Add Voucher
+              </button>
+            </div>
+          </div>
+
+          <!-- Balance Sheet Balancing Alert Status -->
+          <div class="balance-status-alert" id="balanceStatusAlert">
+            <div class="flex items-center gap-3">
+              <div class="status-icon-circle bg-success"><i class="fa-solid fa-scale-balanced"></i></div>
+              <div>
+                <strong id="bsBalanceStatusText">Balance Sheet is Perfectly Balanced! (₹0.00 Variance)</strong>
+                <div class="text-xs text-muted">Total Equity & Liabilities matches Total Assets in accordance with ICAI Indian AS guidelines.</div>
+              </div>
+            </div>
+            <div class="tally-amounts">
+              <div class="tally-box">
+                <span class="label">Total Liabilities</span>
+                <span class="value" id="bsTotalLiabilitiesVal">₹48,20,000.00</span>
+              </div>
+              <div class="tally-box">
+                <span class="label">Total Assets</span>
+                <span class="value" id="bsTotalAssetsVal">₹48,20,000.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Schedule III Statement Display -->
+          <div class="schedule-iii-wrapper" id="printableScheduleIII">
+            
+            <!-- Tab switch inside financial statements: Balance Sheet vs P&L vs Transactions Register -->
+            <div class="statement-subnav">
+              <button class="sub-tab-btn active" data-subtab="subtab-bs">Balance Sheet (Schedule III)</button>
+              <button class="sub-tab-btn" data-subtab="subtab-pnl">Statement of Profit & Loss</button>
+              <button class="sub-tab-btn" data-subtab="subtab-txns">Active Ledger Register (<span id="ledgerCountBadge">5</span>)</button>
+            </div>
+
+            <!-- 1. Balance Sheet Schedule III Table -->
+            <div class="statement-tab-content active" id="subtab-bs">
+              <div class="table-responsive">
+                <table class="schedule-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 55%;">Particulars</th>
+                      <th style="width: 15%;">Note No.</th>
+                      <th style="width: 30%; text-align: right;">As on 31-Mar-2025 (₹)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="scheduleIiLiabilitiesTbody">
+                    <!-- Populated dynamically via JS -->
+                  </tbody>
+                  <tbody id="scheduleIiAssetsTbody">
+                    <!-- Populated dynamically via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 2. Profit & Loss Statement Table -->
+            <div class="statement-tab-content" id="subtab-pnl">
+              <div class="table-responsive">
+                <table class="schedule-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 55%;">Particulars</th>
+                      <th style="width: 15%;">Note No.</th>
+                      <th style="width: 30%; text-align: right;">For Year Ended 31-Mar-2025 (₹)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="scheduleIiiPnlTbody">
+                    <!-- Populated dynamically via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 3. Active Ledger Register Table -->
+            <div class="statement-tab-content" id="subtab-txns">
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Voucher ID</th>
+                      <th>Date</th>
+                      <th>Entity / Vendor</th>
+                      <th>GSTIN</th>
+                      <th>Description</th>
+                      <th>Taxable ₹</th>
+                      <th>GST ₹</th>
+                      <th>TDS ₹</th>
+                      <th>Net Total ₹</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="activeLedgerTbody">
+                    <!-- Populated dynamically via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- TAB 5: GSTR COMPLIANCE & ITC RECONCILIATION -->
+      <!-- ============================================================ -->
+      <section class="tab-panel" id="tab-gstr">
+        <div class="gstr-container">
+          
+          <div class="card glass-card">
+            <div class="card-header">
+              <div class="card-icon bg-emerald"><i class="fa-solid fa-file-shield"></i></div>
+              <div>
+                <h3 class="card-title">GSTR-1 & GSTR-3B Filing Preparation Hub</h3>
+                <p class="card-subtitle">Auto-generates Table 4 (B2B Invoices), Table 12 (HSN Summary), and GSTR-3B Tax Offset calculations</p>
+              </div>
+            </div>
+
+            <div class="gstr-tabs-bar">
+              <button class="gstr-nav-btn active" data-gstrtab="gstr1-tab">GSTR-1 B2B Invoices</button>
+              <button class="gstr-nav-btn" data-gstrtab="gstr2b-tab">GSTR-2B ITC Matching Engine</button>
+              <button class="gstr-nav-btn" data-gstrtab="gstr3b-tab">GSTR-3B Tax Payable Summary</button>
+            </div>
+
+            <!-- GSTR-1 Content -->
+            <div class="gstr-panel-view active" id="gstr1-tab">
+              <div class="flex justify-between items-center mb-3">
+                <div>
+                  <h4 class="font-bold text-sm">Table 4: Taxable Outward & Inward B2B Supplies</h4>
+                  <p class="text-xs text-muted">Formatted for direct JSON upload to GST Portal (gst.gov.in)</p>
+                </div>
+                <button class="btn btn-sm btn-primary" id="downloadGstr1PortalJson">
+                  <i class="fa-solid fa-download"></i> Download GSTR-1 Portal JSON
+                </button>
+              </div>
+
+              <div class="table-responsive">
+                <table class="data-table" id="gstr1Table">
+                  <thead>
+                    <tr>
+                      <th>Receiver GSTIN</th>
+                      <th>Receiver Name</th>
+                      <th>Invoice No</th>
+                      <th>Invoice Date</th>
+                      <th>Invoice Value ₹</th>
+                      <th>Place of Supply</th>
+                      <th>Rate (%)</th>
+                      <th>Taxable ₹</th>
+                      <th>IGST ₹</th>
+                      <th>CGST ₹</th>
+                      <th>SGST ₹</th>
+                    </tr>
+                  </thead>
+                  <tbody id="gstr1TableBody">
+                    <!-- Populated via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- GSTR-2B Content -->
+            <div class="gstr-panel-view" id="gstr2b-tab">
+              <div class="reconciliation-summary-bar">
+                <div class="recon-card matched">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <div>
+                    <div class="recon-val" id="reconMatchedCount">4 Invoices</div>
+                    <div class="recon-lbl">Auto-Matched in 2B (Eligible ITC)</div>
+                  </div>
+                </div>
+                <div class="recon-card mismatch">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                  <div>
+                    <div class="recon-val" id="reconMismatchCount">1 Invoices</div>
+                    <div class="recon-lbl">Supplier Pending / Mismatch</div>
+                  </div>
+                </div>
+                <div class="recon-card blocked">
+                  <i class="fa-solid fa-ban"></i>
+                  <div>
+                    <div class="recon-val" id="reconIneligibleCount">0 Ineligible</div>
+                    <div class="recon-lbl">Sec 17(5) Blocked Credits</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="table-responsive mt-4">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Supplier GSTIN</th>
+                      <th>Supplier Name</th>
+                      <th>Invoice No</th>
+                      <th>Purchase Ledger ₹</th>
+                      <th>GSTR-2B Portal ₹</th>
+                      <th>ITC Eligible</th>
+                      <th>Reconciliation Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="gstr2bTableBody">
+                    <!-- Populated via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- GSTR-3B Content -->
+            <div class="gstr-panel-view" id="gstr3b-tab">
+              <div class="gstr3b-summary-grid" id="gstr3bSummaryGrid">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- TAB 6: N8N ORCHESTRATION & BOT SIMULATION -->
+      <!-- ============================================================ -->
+      <section class="tab-panel" id="tab-integrations">
+        <div class="integrations-grid">
+          
+          <!-- n8n Workflow Visualizer -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <div class="card-icon bg-saffron"><i class="fa-solid fa-network-wired"></i></div>
+              <div>
+                <h3 class="card-title">n8n Workflow Automation Architecture</h3>
+                <p class="card-subtitle">End-to-end receipt parsing, LLM Studio rules validation, and instant journal entry posting</p>
+              </div>
+            </div>
+
+            <!-- Interactive n8n Pipeline Flowchart -->
+            <div class="n8n-flow-diagram">
+              <div class="n8n-node" id="n8nNodeWebhook">
+                <div class="node-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                <div class="node-content">
+                  <div class="node-title">WhatsApp / Webhook Trigger</div>
+                  <div class="node-sub">Receives receipt photo/PDF</div>
+                </div>
+                <span class="node-status-dot active"></span>
+              </div>
+
+              <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+              <div class="n8n-node" id="n8nNodeOcr">
+                <div class="node-icon"><i class="fa-solid fa-eye"></i></div>
+                <div class="node-content">
+                  <div class="node-title">OCR Multimodal Vision</div>
+                  <div class="node-sub">Extracts GSTIN, items & total</div>
+                </div>
+                <span class="node-status-dot active"></span>
+              </div>
+
+              <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+              <div class="n8n-node" id="n8nNodeLlm">
+                <div class="node-icon"><i class="fa-solid fa-brain"></i></div>
+                <div class="node-content">
+                  <div class="node-title">LLM Studio Rules Engine</div>
+                  <div class="node-sub">Applies GST/TDS 194J/194C</div>
+                </div>
+                <span class="node-status-dot active"></span>
+              </div>
+
+              <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+              <div class="n8n-node" id="n8nNodeLedger">
+                <div class="node-icon"><i class="fa-solid fa-database"></i></div>
+                <div class="node-content">
+                  <div class="node-title">Ledger & Balance Sheet</div>
+                  <div class="node-sub">Posts Schedule III JV entry</div>
+                </div>
+                <span class="node-status-dot active"></span>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <button class="btn btn-sm btn-primary" id="btnTriggerN8nTest">
+                <i class="fa-solid fa-play"></i> Simulate Live n8n Execution Run
+              </button>
+              <div class="n8n-log-terminal mt-3" id="n8nLogTerminal">
+                <div class="terminal-header">
+                  <span><i class="fa-solid fa-terminal"></i> n8n Execution Console</span>
+                  <span class="status-pill text-xs">Ready</span>
+                </div>
+                <pre class="terminal-body" id="n8nTerminalBody">
+[2026-09-11 11:58:00] [SYSTEM] FinCopilot n8n Orchestrator initialized.
+[2026-09-11 11:58:00] [WEBHOOK] Listening on /v1/webhook/indian-accounting-agent
+[2026-09-11 11:58:00] [LLM_STUDIO] Model loaded: Indian-Tax-LLM-v2.4 (FY 2024-25 Ruleset)
+[2026-09-11 11:58:00] [STATUS] Ready for webhook payload triggers.
+                </pre>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- WhatsApp & Telegram Simulated Chat Interface -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <div class="card-icon bg-emerald"><i class="fa-brands fa-whatsapp"></i></div>
+              <div>
+                <h3 class="card-title">Live WhatsApp & Telegram Helpline Bot</h3>
+                <p class="card-subtitle">Real-time smartphone chatbot simulation for SME founders & CAs</p>
+              </div>
+            </div>
+
+            <div class="phone-mockup">
+              <div class="phone-header">
+                <div class="flex items-center gap-2">
+                  <div class="bot-avatar-sm"><i class="fa-solid fa-headset"></i></div>
+                  <div>
+                    <div class="font-bold text-xs">FinCopilot Indian Helpline</div>
+                    <div class="text-[10px] text-success">Online | Verified Business</div>
+                  </div>
+                </div>
+                <div class="phone-channel-switch">
+                  <button class="channel-btn active" data-channel="whatsapp"><i class="fa-brands fa-whatsapp"></i></button>
+                  <button class="channel-btn" data-channel="telegram"><i class="fa-brands fa-telegram"></i></button>
+                </div>
+              </div>
+
+              <!-- Phone Chat Stream -->
+              <div class="phone-chat-body" id="phoneChatBody">
+                <div class="phone-msg bot">
+                  <p>🙏 <strong>Namaste!</strong> Welcome to FinCopilot WhatsApp Helpline.</p>
+                  <p>Send an invoice photo or query like <em>"GST on ₹50,000"</em> to get instant calculations & accounting vouchers.</p>
+                  <div class="text-[9px] text-muted text-right mt-1">11:58 AM</div>
+                </div>
+              </div>
+
+              <!-- Phone Input -->
+              <div class="phone-input-bar">
+                <input type="text" id="phoneChatInput" placeholder="Type GST/TDS query..." />
+                <button id="phoneSendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Footer -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <div>
+          <strong>FinCopilot India</strong> — Engineered for Indian Economic Framework, Companies Act 2013 & GSTN.
+        </div>
+        <div class="footer-links">
+          <a href="https://nimble-raindrop-e0e99a.netlify.app/#contact" target="_blank" class="footer-link">
+            <i class="fa-solid fa-envelope"></i> Inquire About Solution
+          </a>
+          <span class="divider">|</span>
+          <span class="text-muted text-xs">FY 2024-25 / 2025-26 Compliant</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- MODAL: Add New Journal Voucher / Transaction -->
+  <div class="modal-overlay" id="addTxnModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-file-circle-plus text-accent"></i>
+          <h3>Add New Accounting Voucher Entry</h3>
+        </div>
+        <button class="modal-close-btn" id="closeAddTxnModal">&times;</button>
+      </div>
+      <form id="newTxnForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Vendor / Client Name:</label>
+            <input type="text" id="newTxnVendor" placeholder="e.g. Tata Consultancy Services" required />
+          </div>
+          <div class="form-group">
+            <label>GSTIN (15 characters):</label>
+            <input type="text" id="newTxnGSTIN" placeholder="29AABCT1332L1ZX" maxlength="15" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Invoice / Voucher Date:</label>
+            <input type="date" id="newTxnDate" value="2024-11-25" required />
+          </div>
+          <div class="form-group">
+            <label>Category / Account Head:</label>
+            <select id="newTxnCategory">
+              <option value="IT Services & Software">IT Services & Software</option>
+              <option value="Professional & Legal Fees">Professional & Legal Fees</option>
+              <option value="Commercial Rent">Commercial Rent</option>
+              <option value="Fixed Assets & Equipment">Fixed Assets & Equipment</option>
+              <option value="Office Supplies & Miscellaneous">Office Supplies & Miscellaneous</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Taxable Amount (₹):</label>
+            <input type="number" id="newTxnTaxable" value="25000" min="0" step="100" required />
+          </div>
+          <div class="form-group">
+            <label>GST Slab (%):</label>
+            <select id="newTxnGSTRate">
+              <option value="18" selected>18% Standard</option>
+              <option value="12">12%</option>
+              <option value="5">5%</option>
+              <option value="28">28%</option>
+              <option value="0">0%</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>TDS Section (if applicable):</label>
+            <select id="newTxnTdsSection">
+              <option value="None">None (0%)</option>
+              <option value="194J-Tech">194J - Technical Fees (2%)</option>
+              <option value="194J-Prof">194J - Professional Fees (10%)</option>
+              <option value="194C-Ind">194C - Contractor Individual (1%)</option>
+              <option value="194C-Corp">194C - Contractor Corp (2%)</option>
+              <option value="194I-Rent">194I - Rent Building (10%)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>State Supply Type:</label>
+            <select id="newTxnSupplyType">
+              <option value="intra" selected>Intra-State (CGST + SGST)</option>
+              <option value="inter">Inter-State (IGST)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer flex justify-end gap-2 mt-4">
+          <button type="button" class="btn btn-outline" id="cancelAddTxnModal">Cancel</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> Save & Post Entry</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Application Logic Scripts -->
+  <script type="module" src="sample_data.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
